@@ -1,17 +1,16 @@
-import "../globals.css";
 import Header from "@/components/Header";
-import Sidebar from "../../components/Siderbar";
+import Sidebar from "../../components/Sidebar";
 import React from "react";
-// import AuthProvider from "@/components/AuthProvider";
+import "../globals.css";
 
 export default function DashboardLayout({ children }) {
   return (
-    <body className="flex">
+    <div className="flex">
       <Sidebar />
       <main className="flex-1">
         <Header />
-        <div className="lg:ml-7">{children}</div>
+        <div className="lg:p-4 bg-slate-50 min-h-screen">{children}</div>
       </main>
-    </body>
+    </div>
   );
 }
