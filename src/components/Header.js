@@ -1,14 +1,39 @@
-import { ChevronDownIcon } from "lucide-react";
+"use client";
+import { ChevronDownIcon, Search } from "lucide-react";
 import Image from "next/image";
+import { Form, FormControl, FormField, FormItem } from "./ui/form";
 import { Input } from "./ui/input";
+import { useForm } from "react-hook-form";
 
 export default function Header({}) {
+  const form = useForm();
+  const { handleSubmit, reset } = form;
+  const onSubmit = async (data) => {
+    console.log("data", data);
+  };
   return (
-    <div className="flex items-center gap-2">
-      <div>
-        <Input placeholder="Search" />
-      </div>
-      <div>
+    <div className="pl-16 lg:pl-4 flex justify-between p-4 items-center gap-2">
+      <Form {...form}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <FormField
+            control={form.control}
+            name="search"
+            render={({ field }) => (
+              <FormItem className="ml-4 bg-slate-100 rounded-md space-y-0 flex py-0 px-4 items-center">
+                <Search className="size-6 stroke-slate-400" />
+                <FormControl className="">
+                  <Input
+                    {...field}
+                    placeholder="Search"
+                    className="bg-transparent w-[300px] border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        </form>
+      </Form>
+      <div className="flex">
         <Image
           alt=""
           width={40}
