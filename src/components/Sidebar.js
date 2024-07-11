@@ -1,21 +1,21 @@
 "use client";
 
-import React from "react";
 import {
   CalendarIcon,
+  ChevronRight,
   ChevronsLeft,
   ChevronsRight,
+  ChevronUp,
   FolderIcon,
   HomeIcon,
-  Menu,
   Settings,
   UsersIcon,
   X,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import logo from "../../public/logo.png";
 import smallLogo from "../../public/small-logo.png";
-import Link from "next/link";
 
 const navigation = [
   { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
@@ -39,35 +39,29 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Sidebar() {
-  const [sidebarOpen, setSidebarOpen] = React.useState(true);
-  const [mobileSidebarOpen, setMobileSidebarOpen] = React.useState(false);
+export default function Sidebar({
+  sidebarOpen,
+  setSidebarOpen,
+  mobileSidebarOpen,
+  setMobileSidebarOpen,
+  isProfileMenuOpen,
+  setIsProfileMenuOpen,
+}) {
   return (
     <>
       {/* Mobile Sidebar */}
-      <div className="lg:hidden">
-        {/* Open bar */}
-        <div className="absolute flex items-center gap-4 top-4 left-4">
-          <div onClick={() => setMobileSidebarOpen(true)}>
-            <Menu className="size-6 stroke-slate-500" />
-          </div>
-          <div className="h-10 border-r" />
-        </div>
-
-        {/* Menu */}
-        <div
-          className={`${
-            mobileSidebarOpen || "hidden"
-          } bg-white z-30 sticky h-screen top-0 left-0 flex`}
-        >
+      <div className={`${!mobileSidebarOpen ? "hidden" : "block"} lg:hidden`}>
+        {/* Overlay  */}
+        <div className={"fixed inset-0 bg-slate-950 opacity-60"}></div>
+        <div className={`fixed inset-0 max-w-[300px] bg-white flex`}>
           <div className="flex flex-col p-4 relative min-w-[300px]">
             <div
               onClick={() => setMobileSidebarOpen(false)}
-              className="absolute right-2 top-2"
+              className="absolute right-2 top-2 cursor-pointer px-3 py-2"
             >
-              <X className="size-5 stroke-slate-500" />
+              <X className="size-4 stroke-slate-500" />
             </div>
-            <Image src={logo} alt="logo" className="h-8 w-fit" />
+            <Image src={smallLogo} alt="logo" className="h-8 w-fit" />
             <div>
               {/* Admin Menu */}
               <div
@@ -84,7 +78,7 @@ export default function Sidebar() {
                         item.current
                           ? "bg-gray-50 text-slate-600"
                           : "text-gray-500 hover:bg-gray-50 hover:text-slate-600",
-                        "group flex items-center gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
+                        "group flex items-center gap-x-3 rounded-md px-3 py-2 text-sm font-semibold leading-6"
                       )}
                     >
                       <item.icon
@@ -104,7 +98,7 @@ export default function Sidebar() {
               </ul>
 
               {/* Team Menu */}
-              <div className={"mt-4 mb-1"}>
+              <div className={"mt-3 mb-1"}>
                 <div className="text-xs font-semibold uppercase leading-6 text-gray-400">
                   Your teams
                 </div>
@@ -119,7 +113,7 @@ export default function Sidebar() {
                         item.current
                           ? "bg-gray-50 text-slate-600"
                           : "text-gray-500 hover:bg-gray-50 hover:text-slate-600",
-                        "group flex items-center gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
+                        "group flex items-center gap-x-3 rounded-md px-3 py-2 text-sm font-semibold leading-6"
                       )}
                     >
                       <item.icon
@@ -138,20 +132,23 @@ export default function Sidebar() {
                 ))}
               </ul>
             </div>
-            <div className="mt-auto text-sm">
+            <div className="-mx-2 mt-auto text-sm">
               <div
                 className={classNames(
-                  "text-gray-500 hover:bg-gray-50 hover:text-slate-600",
-                  "group flex items-center gap-x-3 rounded-md text-sm font-semibold leading-6"
+                  "px-3 py-2 rounded cursor-pointer text-slate-600",
+                  !sidebarOpen || "flex items-center gap-3 hover:bg-slate-50"
                 )}
               >
-                <Settings className="size-5 stroke-slate-500" />
-                Settings
+                <Settings className="size-4 stroke-slate-500" />
+                {!sidebarOpen || (
+                  <div className="flex-1 flex items-center justify-between gap-x-3">
+                    {"Settings"}
+                    <ChevronRight className="size-4 stroke-slate-500" />
+                  </div>
+                )}
               </div>
             </div>
           </div>
-          {/* Overlay  */}
-          <div className={"w-screen h-full bg-slate-950 opacity-60"}></div>
         </div>
       </div>
       {/* Desktop sidebar */}
@@ -164,7 +161,7 @@ export default function Sidebar() {
         {sidebarOpen ? (
           <Image src={logo} alt="logo" className="h-8 w-fit" />
         ) : (
-          <Image src={smallLogo} alt="logo" className="h-6 w-full mb-6" />
+          <Image src={smallLogo} alt="logo" className="h-auto w-6 mb-6" />
         )}
 
         {/* Collapse Arrow */}
@@ -173,13 +170,13 @@ export default function Sidebar() {
             setSidebarOpen(!sidebarOpen);
           }}
           className={` absolute cursor-pointer group top-6 text-primary-900 p-0 hover:text-primary-950 rounded ${
-            sidebarOpen ? "right-0" : "-right-3"
+            sidebarOpen ? "right-4" : "-right-3"
           }`}
         >
           {sidebarOpen ? (
-            <ChevronsLeft className="size-5 stroke-dark-300 group-hover:stroke-dark-200" />
+            <ChevronsLeft className="size-4 stroke-dark-300 group-hover:stroke-dark-200" />
           ) : (
-            <ChevronsRight className="size-5 stroke-dark-300 group-hover:stroke-dark-200" />
+            <ChevronsRight className="size-4 stroke-dark-300 group-hover:stroke-dark-200" />
           )}
         </div>
         <div>
@@ -200,7 +197,7 @@ export default function Sidebar() {
                     item.current
                       ? "bg-gray-50 text-slate-600"
                       : "text-gray-500 hover:bg-gray-50 hover:text-slate-600",
-                    "group flex items-center gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
+                    "group flex items-center gap-x-3 rounded-md px-3 py-2 text-sm font-semibold leading-6"
                   )}
                 >
                   <item.icon
@@ -209,7 +206,7 @@ export default function Sidebar() {
                       item.current
                         ? "text-slate-600"
                         : "text-gray-500 group-hover:text-slate-600",
-                      !sidebarOpen ? "size-5" : "size-4",
+                      !sidebarOpen ? "size-4" : "size-4",
                       "shrink-0"
                     )}
                   />
@@ -239,7 +236,7 @@ export default function Sidebar() {
                     item.current
                       ? "bg-gray-50 text-slate-600"
                       : "text-gray-500 hover:bg-gray-50 hover:text-slate-600",
-                    "group flex items-center gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
+                    "group flex items-center gap-x-3 rounded-md px-3 py-2 text-sm font-semibold leading-6"
                   )}
                 >
                   <item.icon
@@ -248,7 +245,7 @@ export default function Sidebar() {
                       item.current
                         ? "text-slate-600"
                         : "text-gray-500 group-hover:text-slate-600",
-                      !sidebarOpen ? "size-5" : "size-4",
+                      !sidebarOpen ? "size-4" : "size-4",
                       "shrink-0"
                     )}
                   />
@@ -258,16 +255,35 @@ export default function Sidebar() {
             ))}
           </ul>
         </div>
-        <div className="mt-auto text-sm">
+        <div className="-mx-2 mt-auto text-sm">
           <div
+            onClick={() => setIsProfileMenuOpen((prev) => !prev)}
             className={classNames(
-              "text-gray-500 hover:bg-gray-50 hover:text-slate-600",
-              "group flex items-center gap-x-3 rounded-md text-sm font-semibold leading-6"
+              "px-3 py-2 rounded cursor-pointer text-slate-600",
+              sidebarOpen
+                ? "flex items-center gap-3 hover:bg-slate-50"
+                : "hover:space-y-1 transition-all delay-300 ease-in-out"
             )}
           >
-            <Settings className="size-5 stroke-slate-500" />
-            {!sidebarOpen || "Settings"}
+            {sidebarOpen || <ChevronUp className="size-4 stroke-slate-500" />}
+            <Settings className="size-4 stroke-slate-500" />
+            {!sidebarOpen || (
+              <div className="flex-1 flex items-center justify-between gap-x-3">
+                {"Settings"}
+                <ChevronRight className="size-4 stroke-slate-500" />
+              </div>
+            )}
           </div>
+          <ul
+            className={classNames(
+              isProfileMenuOpen || "hidden",
+              "bg-white ring-1 ring-slate-50 absolute left-[101%] bottom-1 rounded min-w-[150px] space-y-2 p-4"
+            )}
+          >
+            {userNavigation.map((item, index) => (
+              <li>{item.name}</li>
+            ))}
+          </ul>
         </div>
       </div>
     </>
