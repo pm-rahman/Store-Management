@@ -1,14 +1,15 @@
 "use client";
 
 import {
-  CalendarIcon,
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
   ChevronUp,
-  FolderIcon,
+  ClipboardListIcon,
+  Cog,
   HomeIcon,
-  Settings,
+  TriangleAlert,
+  User,
   UsersIcon,
   X,
 } from "lucide-react";
@@ -16,19 +17,61 @@ import Image from "next/image";
 import Link from "next/link";
 import logo from "../../public/logo.png";
 import smallLogo from "../../public/small-logo.png";
+import Dropdown from "./Dropdown";
 
 const navigation = [
-  { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
-  { name: "Team", href: "#", icon: UsersIcon, current: false },
-  { name: "Projects", href: "#", icon: FolderIcon, current: false },
-  { name: "Calendar", href: "#", icon: CalendarIcon, current: false },
+  {
+    name: "Dashboard",
+    accessStore: "default",
+    accessRole: "default",
+    href: "#",
+    icon: HomeIcon,
+    current: true,
+  },
+  {
+    name: "Users",
+    accessStore: "default",
+    accessRole: "default",
+    href: "#",
+    icon: UsersIcon,
+    current: false,
+    dropdown: [
+      {
+        name: "Add Users",
+        accessStore: "default",
+        accessRole: "admin",
+        href: "#",
+        icon: UsersIcon,
+        current: false,
+      },
+    ],
+  },
+  {
+    name: "Rules",
+    accessStore: "default",
+    accessRole: "default",
+    href: "#",
+    icon: ClipboardListIcon,
+    current: false,
+  },
+  {
+    name: "Notice",
+    accessStore: "default",
+    accessRole: "default",
+    href: "#",
+    icon: TriangleAlert,
+    current: false,
+  },
+  {
+    name: "Settings",
+    accessStore: "default",
+    accessRole: "default",
+    href: "#",
+    icon: Cog,
+    current: false,
+  },
   // { name: "Documents", href: "#", icon: '', current: false },
   // { name: "Reports", href: "#", icon: ChartPieIcon, current: false },
-];
-const teams = [
-  { id: 1, name: "Heroicons", href: "#", icon: FolderIcon, current: false },
-  { id: 2, name: "Tailwind Labs", href: "#", icon: FolderIcon, current: false },
-  { id: 3, name: "Workcation", href: "#", icon: FolderIcon, current: false },
 ];
 const userNavigation = [
   { name: "Your profile", href: "#" },
@@ -62,50 +105,9 @@ export default function Sidebar({
               <X className="size-4 stroke-slate-500" />
             </div>
             <Image src={smallLogo} alt="logo" className="h-8 w-fit" />
-            <div>
-              {/* Admin Menu */}
-              <div
-                className={`mt-4 mb-2 text-xs font-semibold leading-6 uppercase text-gray-400`}
-              >
-                Main Menu
-              </div>
+            <div className="mt-4">
               <ul role="list" className="-mx-2 space-y-1">
                 {navigation.map((item) => (
-                  <li key={item.name}>
-                    <Link
-                      href={item.href}
-                      className={classNames(
-                        item.current
-                          ? "bg-gray-50 text-slate-600"
-                          : "text-gray-500 hover:bg-gray-50 hover:text-slate-600",
-                        "group flex items-center gap-x-3 rounded-md px-3 py-2 text-sm font-semibold leading-6"
-                      )}
-                    >
-                      <item.icon
-                        aria-hidden="true"
-                        className={classNames(
-                          item.current
-                            ? "text-slate-600"
-                            : "text-gray-500 group-hover:text-slate-600",
-                          "size-4",
-                          "shrink-0"
-                        )}
-                      />
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-
-              {/* Team Menu */}
-              <div className={"mt-3 mb-1"}>
-                <div className="text-xs font-semibold uppercase leading-6 text-gray-400">
-                  Your teams
-                </div>
-              </div>
-              {/* Team Menu Item */}
-              <ul role="list" className="-mx-2 space-y-1">
-                {teams.map((item) => (
                   <li key={item.name}>
                     <Link
                       href={item.href}
@@ -139,10 +141,10 @@ export default function Sidebar({
                   !sidebarOpen || "flex items-center gap-3 hover:bg-slate-50"
                 )}
               >
-                <Settings className="size-4 stroke-slate-500" />
+                <User className="size-4 stroke-slate-500" />
                 {!sidebarOpen || (
                   <div className="flex-1 flex items-center justify-between gap-x-3">
-                    {"Settings"}
+                    {"Profile"}
                     <ChevronRight className="size-4 stroke-slate-500" />
                   </div>
                 )}
@@ -155,7 +157,7 @@ export default function Sidebar({
       <div
         className={`${
           !sidebarOpen ? "w-fit" : "w-[300px]"
-        } hidden h-screen sticky lg:flex flex-col left-0 top-0 p-6 bg-white`}
+        } hidden h-screen sticky lg:flex flex-col left-0 top-0 p-4 bg-white`}
       >
         {/* Logo */}
         {sidebarOpen ? (
@@ -179,78 +181,35 @@ export default function Sidebar({
             <ChevronsRight className="size-4 stroke-dark-300 group-hover:stroke-dark-200" />
           )}
         </div>
-        <div>
-          {/* Admin Menu */}
-          <div
-            className={`${
-              !sidebarOpen && "hidden"
-            } mt-6 mb-2 text-xs font-semibold leading-6 uppercase text-gray-400`}
-          >
-            Main Menu
-          </div>
+        <div className="mt-6">
           <ul role="list" className="-mx-2 space-y-1">
             {navigation.map((item) => (
               <li key={item.name}>
-                <Link
-                  href={item.href}
-                  className={classNames(
-                    item.current
-                      ? "bg-gray-50 text-slate-600"
-                      : "text-gray-500 hover:bg-gray-50 hover:text-slate-600",
-                    "group flex items-center gap-x-3 rounded-md px-3 py-2 text-sm font-semibold leading-6"
-                  )}
-                >
-                  <item.icon
-                    aria-hidden="true"
+                {!item.dropdown ? (
+                  <Link
+                    href={item.href}
                     className={classNames(
                       item.current
-                        ? "text-slate-600"
-                        : "text-gray-500 group-hover:text-slate-600",
-                      !sidebarOpen ? "size-4" : "size-4",
-                      "shrink-0"
+                        ? "bg-gray-50 text-slate-600"
+                        : "text-gray-500 hover:bg-gray-50 hover:text-slate-600",
+                      "group flex items-center gap-x-3 rounded-md px-3 py-2 text-sm font-semibold leading-6"
                     )}
-                  />
-                  {!sidebarOpen || item.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-
-          {/* Team Menu */}
-          <div className={`${!sidebarOpen ? "mt-4 mb-1" : "mt-6 mb-2"}`}>
-            {!sidebarOpen ? (
-              <div aria-hidden="true" className="h-[1px] bg-border w-full" />
-            ) : (
-              <div className="text-xs font-semibold uppercase leading-6 text-gray-400">
-                Your teams
-              </div>
-            )}
-          </div>
-          {/* Team Menu Item */}
-          <ul role="list" className="-mx-2 space-y-1">
-            {teams.map((item) => (
-              <li key={item.name}>
-                <Link
-                  href={item.href}
-                  className={classNames(
-                    item.current
-                      ? "bg-gray-50 text-slate-600"
-                      : "text-gray-500 hover:bg-gray-50 hover:text-slate-600",
-                    "group flex items-center gap-x-3 rounded-md px-3 py-2 text-sm font-semibold leading-6"
-                  )}
-                >
-                  <item.icon
-                    aria-hidden="true"
-                    className={classNames(
-                      item.current
-                        ? "text-slate-600"
-                        : "text-gray-500 group-hover:text-slate-600",
-                      !sidebarOpen ? "size-4" : "size-4",
-                      "shrink-0"
-                    )}
-                  />
-                  {!sidebarOpen || item.name}
-                </Link>
+                  >
+                    <item.icon
+                      aria-hidden="true"
+                      className={classNames(
+                        item.current
+                          ? "text-slate-600"
+                          : "text-gray-500 group-hover:text-slate-600",
+                        !sidebarOpen ? "size-4" : "size-4",
+                        "shrink-0 flex items-center"
+                      )}
+                    />
+                    {!sidebarOpen || item.name}
+                  </Link>
+                ) : (
+                  <Dropdown item={item} sidebarOpen={sidebarOpen} />
+                )}
               </li>
             ))}
           </ul>
@@ -266,10 +225,10 @@ export default function Sidebar({
             )}
           >
             {sidebarOpen || <ChevronUp className="size-4 stroke-slate-500" />}
-            <Settings className="size-4 stroke-slate-500" />
+            <User className="size-4 stroke-slate-500" />
             {!sidebarOpen || (
               <div className="flex-1 flex items-center justify-between gap-x-3">
-                {"Settings"}
+                {"Profile"}
                 <ChevronRight className="size-4 stroke-slate-500" />
               </div>
             )}
@@ -281,7 +240,7 @@ export default function Sidebar({
             )}
           >
             {userNavigation.map((item, index) => (
-              <li>{item.name}</li>
+              <li key={index}>{item.name}</li>
             ))}
           </ul>
         </div>
