@@ -1,9 +1,5 @@
 "use client";
-import {
-  Bell, Menu,
-  MessageSquareWarning,
-  Search
-} from "lucide-react";
+import { Bell, Menu, MessageSquareWarning, Search } from "lucide-react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem } from "./ui/form";
@@ -19,10 +15,11 @@ export default function Header({ setMobileSidebarOpen }) {
     <div className="flex justify-between p-4 items-center gap-2">
       <div className="flex items-center gap-4 sm:gap-6">
         {/* Mobile open menu bar */}
-        <div className="lg:hidden flex items-center gap-4 sm:gap-6">
-          <div onClick={() => setMobileSidebarOpen(true)}>
-            <Menu className="size-6 stroke-slate-500" />
-          </div>
+        <div
+          onClick={() => setMobileSidebarOpen(true)}
+          className="lg:hidden flex items-center gap-4 sm:gap-6"
+        >
+          <Menu className="size-6 cursor-pointer stroke-slate-500" />
           <div className="h-10 border-r" />
         </div>
         <Form {...form}>
@@ -49,8 +46,8 @@ export default function Header({ setMobileSidebarOpen }) {
       {/* Right side */}
       <div className="flex gap-3 sm:gap-10 xl:gap-12 items-center">
         <div className="flex gap-2 sm:gap-4 lg:gap-5 items-center">
-          <MessageSquareWarning className="size-5 stroke-slate-500" />
-          <Bell className="size-5 stroke-slate-500" />
+          <MessageSquareWarning className="size-6 stroke-slate-500" />
+          <Bell className="size-6 stroke-slate-500" />
         </div>
 
         <div className="relative flex gap-1 sm:gap-2 items-center">
