@@ -23,6 +23,9 @@ module.exports = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        heading: "rgba(var(--heading))",
+        "sub-heading": "rgba(var(--sub-heading))",
+        paragraph: "rgba(var(--paragraph))",
         primary: {
           DEFAULT: "hsl(var(--primary-600))",
           foreground: "hsl(var(--primary-300))",

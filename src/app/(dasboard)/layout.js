@@ -20,7 +20,7 @@ export default function DashboardLayout({ children }) {
       />
       <main className="flex-1">
         <Header setMobileSidebarOpen={setMobileSidebarOpen} />
-        <div className="lg:p-4 bg-slate-50 min-h-screen">{children}</div>
+        <div className="p-12 bg-slate-50 min-h-screen">{children}</div>
       </main>
     </div>
   );

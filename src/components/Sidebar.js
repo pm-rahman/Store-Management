@@ -7,7 +7,9 @@ import {
   ChevronUp,
   ClipboardListIcon,
   Cog,
+  Earth,
   HomeIcon,
+  School,
   TriangleAlert,
   User,
   UsersIcon,
@@ -15,6 +17,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import logo from "../../public/logo.png";
 import smallLogo from "../../public/small-logo.png";
 import Dropdown from "./Dropdown";
@@ -24,33 +27,39 @@ const navigation = [
     name: "Dashboard",
     accessStore: "default",
     accessRole: "default",
-    href: "#",
+    href: "/dashboard",
     icon: HomeIcon,
     current: true,
   },
   {
-    name: "Users",
+    name: "Members",
     accessStore: "default",
     accessRole: "default",
-    href: "#",
+    href: "/members",
     icon: UsersIcon,
     current: false,
-    dropdown: [
-      {
-        name: "Add Users",
-        accessStore: "default",
-        accessRole: "admin",
-        href: "#",
-        icon: UsersIcon,
-        current: false,
-      },
-    ],
+  },
+  {
+    name: "Course",
+    accessStore: "academic",
+    accessRole: "default",
+    href: "/course",
+    icon: School,
+    current: false,
+  },
+  {
+    name: "Training",
+    accessStore: "club",
+    accessRole: "default",
+    href: "/training",
+    icon: Earth,
+    current: false,
   },
   {
     name: "Rules",
     accessStore: "default",
     accessRole: "default",
-    href: "#",
+    href: "/rules",
     icon: ClipboardListIcon,
     current: false,
   },
@@ -58,15 +67,15 @@ const navigation = [
     name: "Notice",
     accessStore: "default",
     accessRole: "default",
-    href: "#",
+    href: "/notice",
     icon: TriangleAlert,
     current: false,
   },
   {
-    name: "Settings",
+    name: "Store Settings",
     accessStore: "default",
     accessRole: "default",
-    href: "#",
+    href: "/store-settings",
     icon: Cog,
     current: false,
   },
@@ -90,6 +99,13 @@ export default function Sidebar({
   isProfileMenuOpen,
   setIsProfileMenuOpen,
 }) {
+  const pathName = usePathname();
+  const user = {
+    name: "Mokhlesur Rahman",
+    email: "mokhles.xponent@gmail.com",
+    role: "admin",
+    storeType: "club",
+  };
   return (
     <>
       {/* Mobile Sidebar */}
@@ -109,27 +125,36 @@ export default function Sidebar({
               <ul role="list" className="-mx-2 space-y-1">
                 {navigation.map((item) => (
                   <li key={item.name}>
-                    <Link
-                      href={item.href}
-                      className={classNames(
-                        item.current
-                          ? "bg-gray-50 text-slate-600"
-                          : "text-gray-500 hover:bg-gray-50 hover:text-slate-600",
-                        "group flex items-center gap-x-3 rounded-md px-3 py-2 text-sm font-semibold leading-6"
-                      )}
-                    >
-                      <item.icon
-                        aria-hidden="true"
+                    {!item.dropdown ? (
+                      <Link
+                        href={item.href}
                         className={classNames(
-                          item.current
-                            ? "text-slate-600"
-                            : "text-gray-500 group-hover:text-slate-600",
-                          "size-4",
-                          "shrink-0"
+                          item.href == pathName
+                            ? "bg-primary-50 text-slate-600"
+                            : "text-gray-500 hover:bg-primary-50 hover:text-slate-600",
+                          "group flex items-center gap-x-3 rounded-md px-3 py-2 text-sm font-semibold leading-6"
                         )}
+                      >
+                        <item.icon
+                          aria-hidden="true"
+                          className={classNames(
+                            item.href == pathName
+                              ? "text-slate-600"
+                              : "text-gray-500 group-hover:text-slate-600",
+                            "size-4",
+                            "shrink-0"
+                          )}
+                        />
+                        {item.name}
+                      </Link>
+                    ) : (
+                      <Dropdown
+                        item={item}
+                        sidebarOpen={sidebarOpen}
+                        pathName={pathName}
+                        user={user}
                       />
-                      {item.name}
-                    </Link>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -141,7 +166,7 @@ export default function Sidebar({
                   !sidebarOpen || "flex items-center gap-3 hover:bg-slate-50"
                 )}
               >
-                <User className="size-4 stroke-slate-500" />
+                <User className="size-5 stroke-slate-500" />
                 {!sidebarOpen || (
                   <div className="flex-1 flex items-center justify-between gap-x-3">
                     {"Profile"}
@@ -171,7 +196,7 @@ export default function Sidebar({
           onClick={() => {
             setSidebarOpen(!sidebarOpen);
           }}
-          className={` absolute cursor-pointer group top-6 text-primary-900 p-0 hover:text-primary-950 rounded ${
+          className={`absolute cursor-pointer group top-6 text-primary-900 p-0 hover:text-primary-950 rounded ${
             sidebarOpen ? "right-4" : "-right-3"
           }`}
         >
@@ -183,35 +208,53 @@ export default function Sidebar({
         </div>
         <div className="mt-6">
           <ul role="list" className="-mx-2 space-y-1">
-            {navigation.map((item) => (
-              <li key={item.name}>
-                {!item.dropdown ? (
-                  <Link
-                    href={item.href}
-                    className={classNames(
-                      item.current
-                        ? "bg-gray-50 text-slate-600"
-                        : "text-gray-500 hover:bg-gray-50 hover:text-slate-600",
-                      "group flex items-center gap-x-3 rounded-md px-3 py-2 text-sm font-semibold leading-6"
+            {navigation.map(
+              (item) =>
+                // store and role validation
+                (item.accessStore == "default" ||
+                  item.accessStore == user.storeType) &&
+                (item.accessRole == "default" ||
+                  item.accessRole == user.role) && (
+                  <li key={item.name}>
+                    {!item?.dropdown?.filter(
+                      (item) =>
+                        (item.accessStore == "default" ||
+                          item.accessStore == user.storeType) &&
+                        (item.accessRole == "default" ||
+                          item.accessRole == user.role)
+                    ).length > 0 ? (
+                      <Link
+                        href={item.href}
+                        className={classNames(
+                          item.href == pathName
+                            ? "bg-primary-50 text-slate-600"
+                            : "text-gray-500 hover:bg-primary-50 hover:text-slate-600",
+                          "group flex items-center gap-x-3 rounded-md px-3 py-2 text-sm font-semibold leading-6"
+                        )}
+                      >
+                        <item.icon
+                          aria-hidden="true"
+                          className={classNames(
+                            item.href == pathName
+                              ? "text-slate-600"
+                              : "text-gray-500 group-hover:text-slate-600",
+                            !sidebarOpen ? "size-5" : "size-5",
+                            "shrink-0 flex items-center"
+                          )}
+                        />
+                        {!sidebarOpen || item.name}
+                      </Link>
+                    ) : (
+                      <Dropdown
+                        item={item}
+                        sidebarOpen={sidebarOpen}
+                        pathName={pathName}
+                        user={user}
+                      />
                     )}
-                  >
-                    <item.icon
-                      aria-hidden="true"
-                      className={classNames(
-                        item.current
-                          ? "text-slate-600"
-                          : "text-gray-500 group-hover:text-slate-600",
-                        !sidebarOpen ? "size-4" : "size-4",
-                        "shrink-0 flex items-center"
-                      )}
-                    />
-                    {!sidebarOpen || item.name}
-                  </Link>
-                ) : (
-                  <Dropdown item={item} sidebarOpen={sidebarOpen} />
-                )}
-              </li>
-            ))}
+                  </li>
+                )
+            )}
           </ul>
         </div>
         <div className="-mx-2 mt-auto text-sm">
@@ -225,7 +268,7 @@ export default function Sidebar({
             )}
           >
             {sidebarOpen || <ChevronUp className="size-4 stroke-slate-500" />}
-            <User className="size-4 stroke-slate-500" />
+            <User className="size-5 stroke-slate-500" />
             {!sidebarOpen || (
               <div className="flex-1 flex items-center justify-between gap-x-3">
                 {"Profile"}

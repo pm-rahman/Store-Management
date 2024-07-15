@@ -43,6 +43,10 @@
     --secondary-900: 340, 63%, 30%;
     --secondary-950: 339, 77%, 17%;
 
+    /* others colors */
+    --heading: 0, 0, 0, 1;
+    --sub-heading: 0, 0, 0, 80%;
+    --paragraph: 0, 0, 0, 60%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
