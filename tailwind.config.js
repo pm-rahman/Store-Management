@@ -28,7 +28,7 @@ module.exports = {
         paragraph: "rgba(var(--paragraph))",
         primary: {
           DEFAULT: "hsl(var(--primary-600))",
-          foreground: "hsl(var(--primary-300))",
+          foreground: "hsl(var(--primary-50))",
           50: "hsl(var(--primary-50))",
           100: "hsl(var(--primary-100))",
           200: "hsl(var(--primary-200))",
@@ -43,7 +43,7 @@ module.exports = {
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary-500))",
-          foreground: "hsl(var(--secondary-300))",
+          foreground: "hsl(var(--secondary-50))",
           50: "hsl(var(--secondary-50))",
           100: "hsl(var(--secondary-100))",
           200: "hsl(var(--secondary-200))",
@@ -61,8 +61,8 @@ module.exports = {
           foreground: "hsl(var(--destructive-foreground))",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "rgba(var(--muted))",
+          foreground: "rgba(var(--muted-foreground))",
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",
