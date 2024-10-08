@@ -5,7 +5,7 @@ import SigninForm from "./component/SigninForm";
 export default function page() {
   return (
     <div className="flex flex-col min-h-screen justify-center items-center">
-      <div className="pb-6 bg-slate-50 border border-t-2 drop-shadow-sm h-fit w-1/3">
+      <div className="pb-6 bg-slate-50 border border-t-[3px] border-t-primary drop-shadow-sm h-fit w-1/3">
         {/* Header */}
         <div className="flex h-14 font-semibold text-heading">
           <Link

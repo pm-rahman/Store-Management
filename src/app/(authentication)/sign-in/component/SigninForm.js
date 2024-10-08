@@ -42,7 +42,7 @@ export default function SigninForm() {
                 <TransparentInput
                   error={form.formState.errors.name}
                   value={field.value}
-                  placeholder="Username"
+                  placeholder="Username or Email"
                   {...field}
                 />
               </FormControl>
