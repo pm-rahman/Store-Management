@@ -14,10 +14,12 @@ import PasswordInput from "@/components/PasswordInput";
 import { Button } from "@/components/ui/button";
 
 const formSchema = z.object({
-  name: z.string().min(3, "Name is Required!"),
-  username: z.string().min(3, "Min 3 character is Required!"),
+  name: z.string().min(3, "Name is required!"),
   email: z.string().email(),
-  profile: z.string().optional(),
+  image: z.string().optional(),
+  phone:z.string().optional(),
+  facebook:z.string().optional(),
+  password:z.string().min(6,'Min 6 length required!')
 });
 export default function SignupForm() {
   const form = useForm({
