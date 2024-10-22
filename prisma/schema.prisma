@@ -12,3 +12,70 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id                 String            @id @default(auto()) @map("_id") @db.ObjectId
+  name               String
+  email              String            @unique
+  emailVerified      Boolean           @default(false)
+  emailVerifiedToken String?
+  resetToken         String?
+  tokenUsed          Boolean           @default(false) // Corrected typo
+  image              String?
+  phone              String?
+  facebook           String?
+  password           String
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  isAdmin            Boolean           @default(false)
+  isSuperAdmin       Boolean           @default(false)
+  userJoindedStore   StoreMember[]
+  createdStores      Store[]           @relation("createdStore")
+  storeModulations   StoreModulation[] // Update to use the join model
+  isDeactivate       Boolean           @default(false)
+
+  @@map("users")
+}
+
+model Store {
+  id               String            @id @default(auto()) @map("_id") @db.ObjectId
+  name             String
+  category         StoreCategory
+  createdById      String            @db.ObjectId
+  createdBy        User              @relation("createdStore", fields: [createdById], references: [id]) // Relation with User as creator
+  description      String?
+  storeModulations StoreModulation[] // Update to use the join model
+  storeMember      StoreMember[]
+
+  @@map("stores")
+}
+
+enum StoreCategory {
+  organization
+  training
+  corporate
+  sports // Corrected from "Spots" to "Sports"
+  charity
+  personal
+}
+
+model StoreModulation {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  userId  String @db.ObjectId
+  storeId String @db.ObjectId
+
+  user  User  @relation(fields: [userId], references: [id])
+  store Store @relation(fields: [storeId], references: [id])
+
+  @@map("store_modulations")
+}
+
+model StoreMember {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  userId   String @db.ObjectId
+  user     User   @relation(fields: [userId], references: [id])
+  storeIDs String @db.ObjectId
+  stores   Store  @relation(fields: [storeIDs], references: [id])
+
+  @@map("store_members")
+}
