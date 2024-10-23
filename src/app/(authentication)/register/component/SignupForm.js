@@ -1,33 +1,31 @@
 "use client";
-import TransparentInput from "@/components/TransparentInput";
+import PasswordInput from "@/components/PasswordInput";
+import SubmitButton from "@/components/SubmitButton";
+import TextInput from "@/components/TextInput";
+import { Form } from "@/components/ui/form";
+import { Separator } from "@/components/ui/separator";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { Mail, Phone, UserRound } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import PasswordInput from "@/components/PasswordInput";
-import { Button } from "@/components/ui/button";
 
 const formSchema = z.object({
   name: z.string().min(3, "Name is required!"),
   email: z.string().email(),
   image: z.string().optional(),
-  phone:z.string().optional(),
-  facebook:z.string().optional(),
-  password:z.string().min(6,'Min 6 length required!')
+  phone: z.string().optional(),
+  facebook: z.string().optional(),
+  password: z.string().min(6, "Min 6 length required!"),
 });
 export default function SignupForm() {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      username: "",
       email: "",
+      image: "",
+      phone: "",
+      facebook: "",
       password: "",
     },
   });
@@ -38,79 +36,56 @@ export default function SignupForm() {
   };
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-8">
-        <FormField
-          control={form.control}
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-4 p-8 mt-2"
+      >
+        {/* Name account */}
+        <TextInput
+          form={form}
           name="name"
-          render={({ field }) => (
-            <FormItem className="flex-1 space-y-1">
-              <FormControl>
-                <TransparentInput
-                  error={form.formState.errors.name}
-                  value={field.value}
-                  placeholder="Name"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage className="text-destructive" />
-            </FormItem>
-          )}
+          placeholder="Name*"
+          icon={<UserRound className="size-[16px] stroke-gray-500" />}
         />
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem className="flex-1 space-y-1">
-              <FormControl>
-                <TransparentInput
-                  error={form.formState.errors.username}
-                  value={field.value}
-                  placeholder="Username"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage className="text-destructive" />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
+
+        {/* Email account */}
+        <TextInput
+          form={form}
           name="email"
-          render={({ field }) => (
-            <FormItem className="flex-1 space-y-1">
-              <FormControl>
-                <TransparentInput
-                  error={form.formState.errors.email}
-                  value={field.value}
-                  placeholder="Email"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage className="text-destructive" />
-            </FormItem>
-          )}
+          placeholder="Email*"
+          type="email"
+          icon={<Mail className="size-[16px] stroke-gray-500" />}
         />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem className="flex-1 space-y-1">
-              <FormControl>
-                <PasswordInput
-                  error={form.formState.errors.password}
-                  value={field.value}
-                  placeholder="Password"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage className="text-destructive" />
-            </FormItem>
-          )}
+        {/* Phone number */}
+        <TextInput
+          form={form}
+          name="phone"
+          placeholder="Phone*"
+          type="number"
+          icon={<Phone className="size-[16px] stroke-gray-500" />}
         />
-        <Button className="w-full hover:bg-primary-700">
-          {/* {form.formState.isSubmitting&&} */}
-          Register
-        </Button>
+        <Separator />
+
+        {/* Profile picture */}
+        <TextInput
+          form={form}
+          name="image"
+          placeholder="Profile picture"
+          type="file"
+        />
+        {/* Facebook profile url */}
+        <TextInput
+          form={form}
+          name="facebook"
+          placeholder="Facebook profile URL"
+          type="url"
+        />
+
+        {/* Password field */}
+        <PasswordInput name="password" form={form} placeholder="Password*" />
+
+        {/* Submit button */}
+        <SubmitButton form={form} btnTitle="Register" />
       </form>
     </Form>
   );
