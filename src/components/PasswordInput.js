@@ -1,22 +1,55 @@
 import React from "react";
-import TransparentInput from "./TransparentInput";
 import { Eye, EyeOff } from "lucide-react";
+import { FormControl, FormField, FormItem } from "./ui/form";
+import ErrorMessage from "./ErrorMessage";
+import { cn } from "@/lib/utils";
+import { Input } from "./ui/input";
 
-export default function PasswordInput({ className, ...props }) {
+export default function PasswordInput({
+  form,
+  name,
+  type,
+  placeholder,
+  className,
+}) {
   const [isShowPassword, setIsShowPassword] = React.useState(false);
   return (
-    <div className="flex-1 relative">
-      <TransparentInput
-        type={`${!isShowPassword ? "password" : "text"}`}
-        {...props}
-      />
-      <span className="absolute right-3 top-[25%] size-fit cursor-pointer">
-        {!isShowPassword ? (
-          <Eye onClick={()=>setIsShowPassword(true)} className="size-5 stroke-gray-400" />
-        ) : (
-          <EyeOff onClick={()=>setIsShowPassword(false)} className="size-5 stroke-gray-400" />
-        )}
-      </span>
-    </div>
+    <FormField
+      control={form.control}
+      name={name || "password"}
+      render={({ field }) => (
+        <FormItem className="flex-1 space-y-1">
+          <FormControl>
+            <div className="flex-1 relative">
+              <Input
+                type={`${!isShowPassword ? type || "password" : "text"}`}
+                {...field}
+                className={cn(
+                  "bg-transparent placeholder:text-muted-foreground focus:shadow-sm ring-offset-0 text-[14px] focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0",
+                  className,
+                  form.formState.errors[name || "password"] &&
+                    "border-destructive text-destructive"
+                )}
+                placeholder={placeholder || "Enter password"}
+              />
+              <span className="absolute right-3 top-[25%] size-fit cursor-pointer">
+                {!isShowPassword ? (
+                  <Eye
+                    onClick={() => setIsShowPassword(true)}
+                    className="size-5 stroke-gray-400"
+                  />
+                ) : (
+                  <EyeOff
+                    onClick={() => setIsShowPassword(false)}
+                    className="size-5 stroke-gray-400"
+                  />
+                )}
+              </span>
+            </div>
+          </FormControl>
+          <ErrorMessage error={form.formState.errors[name || "password"]} />
+        </FormItem>
+      )}
+    />
   );
 }

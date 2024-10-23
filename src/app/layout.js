@@ -13,7 +13,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       {/* <AuthProvider> */}
-        <body className={`${inter.className} bg-slate-50`}>{children}</body>
+      <body className={`${inter.className} bg-slate-50`} suppressHydrationWarning={true}>{children}</body>
       {/* </AuthProvider> */}
     </html>
   );
