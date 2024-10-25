@@ -4,6 +4,7 @@ import SubmitButton from "@/components/SubmitButton";
 import TextInput from "@/components/TextInput";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Lock, UserRound } from "lucide-react";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -32,12 +33,18 @@ export default function SigninForm() {
         className="space-y-4 p-8 mt-2"
       >
         {/* Text input */}
-        <TextInput form={form} name="name" placeholder="Enter name" />
+        <TextInput
+          form={form}
+          name="name"
+          placeholder="Enter name"
+          icon={<UserRound className="size-[16px] stroke-gray-500" />}
+        />
         {/* Password field */}
         <PasswordInput
           name="password"
           form={form}
           placeholder="Enter password"
+          icon={<Lock className="size-[16px] stroke-gray-500" />}
         />
         {/* Submit button */}
         <SubmitButton form={form} btnTitle="Sign In" />

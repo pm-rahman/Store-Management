@@ -4,8 +4,10 @@ import SubmitButton from "@/components/SubmitButton";
 import TextInput from "@/components/TextInput";
 import { Form } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
+import UploadImage from "@/components/UploadImage";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Mail, Phone, UserRound } from "lucide-react";
+import { Facebook, Lock, Mail, Phone, UserRound } from "lucide-react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -18,6 +20,7 @@ const formSchema = z.object({
   password: z.string().min(6, "Min 6 length required!"),
 });
 export default function SignupForm() {
+  const [image, setImage] = React.useState({});
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -66,23 +69,25 @@ export default function SignupForm() {
         />
         <Separator />
 
-        {/* Profile picture */}
-        <TextInput
-          form={form}
-          name="image"
-          placeholder="Profile picture"
-          type="file"
-        />
+        {/* Profile Picture */}
+        <UploadImage image={image} label="Profile image" setImage={setImage} />
+
         {/* Facebook profile url */}
         <TextInput
           form={form}
           name="facebook"
           placeholder="Facebook profile URL"
           type="url"
+          icon={<Facebook className="size-[16px] stroke-gray-500 fill-none " />}
         />
 
         {/* Password field */}
-        <PasswordInput name="password" form={form} placeholder="Password*" />
+        <PasswordInput
+          name="password"
+          form={form}
+          placeholder="Password*"
+          icon={<Lock className="size-[16px] stroke-gray-500" />}
+        />
 
         {/* Submit button */}
         <SubmitButton form={form} btnTitle="Register" />
