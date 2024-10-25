@@ -11,6 +11,7 @@ export default function PasswordInput({
   type,
   placeholder,
   className,
+  icon,
 }) {
   const [isShowPassword, setIsShowPassword] = React.useState(false);
   return (
@@ -18,7 +19,8 @@ export default function PasswordInput({
       control={form.control}
       name={name || "password"}
       render={({ field }) => (
-        <FormItem className="flex-1 space-y-1">
+        <FormItem className="flex-1 space-y-1 relative">
+          {icon && <span className="absolute top-3 left-3">{icon}</span>}
           <FormControl>
             <div className="flex-1 relative">
               <Input
@@ -27,6 +29,7 @@ export default function PasswordInput({
                 className={cn(
                   "bg-transparent placeholder:text-muted-foreground focus:shadow-sm ring-offset-0 text-[14px] focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0",
                   className,
+                  icon && "pl-10",
                   form.formState.errors[name || "password"] &&
                     "border-destructive text-destructive"
                 )}
